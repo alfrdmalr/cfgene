@@ -1,3 +1,5 @@
+// seqChar.js
+
 // object for storing input characters as well as the downstream 
 // expansions produced by the genetic grammar (amino acids, codons, etc.)
 class SeqChar {
@@ -6,7 +8,7 @@ class SeqChar {
 		this.grammar = grammar;
 	
 		// if the grammar has a production rule for this character
-		if (grammar.hasOwnProperty(SeqChar.symbolify(c))) {
+		if (this.grammar.hasRule(this.grammar.symbolify(c))) {
 			this.hasExpansion = true;
 		} else {
 			this.hasExpansion  = false;
@@ -23,21 +25,6 @@ class SeqChar {
 		}
 	}
 
-	// apply 'symbol' syntax to a character
-	// symbols take the form: "<SYMBOL>"
-	static symbolify(c) {
-		return `<${c.toUpperCase()}>`;
-	}
-
-	getAASymbol() {
-		let c = this.getAA();
-		if (this.hasExpansion) {
-			return SeqChar.symbolify(c); 
-		} else {
-			return '';	
-		}
-	}
-
 	getCodon(verbose) {
 		if (!this.hasExpansion) {
 			if (verbose) {
@@ -48,8 +35,7 @@ class SeqChar {
 		} else if (this.codon) {
 			return this.codon;
 		} else {
-			let candidates = this.grammar[this.getAASymbol()];
-			this.codon = random(candidates);
+			this.codon = this.grammar.getRandomExpansion(this.inputChar);
 			return this.codon;
 		}
 	}

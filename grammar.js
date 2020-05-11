@@ -21,13 +21,19 @@ class	Grammar {
 		return this.grammar.hasOwnProperty(symbol);
 	}
 
-	getRule(symbol) {
+	getExpansionOptions(symbol) {
 		return this.grammar[symbol];
+	}
+
+	getRandomExpansion(symbol) {
+		let options = this.getExpansionOptions(symbol);
+		let r = Math.floor(Math.random(options.length)) * options.length;
+		return options[r];
 	}
 
 	addRule(symbol, expansion) {
 		if (this.hasRule(symbol)) {
-			throw new Error(`Symbol ${symbol} already has the following rule:\n${this.getRule(symbol)}`);
+			throw new Error(`Symbol ${symbol} already has the following rule:\n${this.getExpansionOptions(symbol)}`);
 		}
 		
 		this.grammar[adornedSymbol] = expansion;
