@@ -13,7 +13,7 @@ class	Grammar {
 		if (this.adornSymbol) {
 			return this.adornSymbol(c);
 		}	else {
-			return `<${c}>`;
+			return `<${c.toUpperCase()}>`;
 		} 
 	}
 	
