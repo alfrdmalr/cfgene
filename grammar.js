@@ -4,9 +4,12 @@ class	Grammar {
 	// optional args:
 	// - grammar: JSON object holding production rules for the grammar
 	// - adornSymbols: function to transform a string into a grammar-compliant symbol 
-	constructor(grammar, adornSymbol) {
+	// - symbolCapture:	regular expression to match/capture symbols. Required for
+	//									recursive production rules
+	constructor(grammar, adornSymbol, symbolCapture) {
 		this.grammar = grammar || {};
 		this.adornSymbol = adornSymbol;
+		this.symbolCapture = symbolCapture || /(<[\w]+>)/;
 	}
 
 	symbolify(c) {
@@ -18,7 +21,7 @@ class	Grammar {
 	}
 	
 	hasRule(str) {
-		return this.grammar.hasOwnProperty(symbol);
+		return this.grammar.hasOwnProperty(str);
 	}
 
 	getExpansionOptions(symbol) {
@@ -27,7 +30,7 @@ class	Grammar {
 
 	getRandomExpansion(symbol) {
 		let options = this.getExpansionOptions(symbol);
-		let r = Math.floor(Math.random(options.length)) * options.length;
+		let r = Math.floor(Math.random() * options.length);
 		return options[r];
 	}
 
@@ -54,5 +57,33 @@ class	Grammar {
 		}
 
 		delete this.grammar[symbol];
+	}
+
+	// fully expands the given string using production rules 
+	expand(str) {
+		let acc = [];
+		this._expander(str, acc);
+		return acc.join("");
+	}
+
+	// Updates the given accumulator by expanding the input text recursively
+	_expander(text, acc) {
+		console.log(text);
+		let parsedText = text.split(this.symbolCapture); // capture so we don't lose symbols
+		
+		for (let i = 0; i < parsedText.length; i++) {
+			let string = (parsedText[i]);
+			let match = string.match(this.symbolCapture);
+			let symbol = match && match[0];
+			if (!symbol) {
+				acc.push(string);
+			} else if (this.hasRule(symbol)) {
+				let randomExpansion = this.getRandomExpansion(symbol);
+				this.expand(randomExpansion, acc);
+			} else {
+				console.log(`No production rule for ${symbol} was found in the grammar.`)
+				acc.push(string); // if no rule is found, preserve the original string
+			}
+		}
 	}
 }

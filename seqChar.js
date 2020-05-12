@@ -5,23 +5,41 @@
 class SeqChar {
 	constructor(c, grammar) {
 		this.inputChar = c;
+		this.symbol = grammar.symbolify(c);
 		this.grammar = grammar;
 	
 		// if the grammar has a production rule for this character
-		if (this.grammar.hasRule(this.grammar.symbolify(c))) {
+		if (this.grammar.hasRule(this.symbol)) {
 			this.hasExpansion = true;
 		} else {
 			this.hasExpansion  = false;
 		}
 	}
+	
+	// converts a regular string into an array of SeqChars
+	static convert(str, grammar) {
+		return str.split('').map(c => new SeqChar(c, grammar));	
+	}
+
+	static getAllAAs(chars, delim, verbose) {
+		delim = delim || '';
+		return chars.map(c => c.getAA(verbose)).join(delim);
+	}
+
+	static getAllCodons(chars, delim, verbose) {
+		delim = delim || '';
+		return chars.map(c => c.getCodon(verbose)).join(delim);
+	}
 
 	getAA(verbose) {
-		if (this.hasExpansion) {
-			return this.inputChar.toUpperCase();
-		} else if (verbose) {
-			return this.inputChar;
+		if (!this.hasExpansion) {
+			if (verbose) {
+				return this.inputChar;
+			} else {
+				return '';
+			}
 		} else {
-			console.log(`No production rule for ${this.inputChar}; skipping. Verbose output can be enabled by passing "true" to this function`);
+			return this.inputChar.toUpperCase();
 		}
 	}
 
@@ -35,8 +53,9 @@ class SeqChar {
 		} else if (this.codon) {
 			return this.codon;
 		} else {
-			this.codon = this.grammar.getRandomExpansion(this.inputChar);
+			this.codon = this.grammar.getRandomExpansion(this.symbol);
 			return this.codon;
 		}
 	}
+
 }
