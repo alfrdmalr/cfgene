@@ -5,6 +5,7 @@ class Walker {
 		this.pos = createVector(x, y);
 		this.originalPos = this.pos.copy();
 		this.scale = scale || 1;
+		this.rainbow = true;
 	} 	
 
 	step(base) {
@@ -30,33 +31,27 @@ class Walker {
 		this.pos = this.originalPos.copy();
 	}
 
-	walk(seq, x, y) {
+	walk(seq) {
 		this.reset();	
-		
 		push();
-		// setting the second arg to seq.length gets us a non-repeating rainbow
-		// from head->tail
-		colorMode(HSB, seq.length);
 		scale(this.scale);
+		
+		let max = 100;
+		if (this.rainbow) {
+			max = seq.length;	
+		}
+		colorMode(HSB, max);
 		let col = 0;
 		for (let i = 0; i < seq.length; i++) {
 			this.step(seq[i]);
-			stroke(col, 100, 100);
+			stroke(col, max, max);
 			point(this.pos.x, this.pos.y);
-			col = (col + 1) % seq.length;
+			col = (col + 1) % max;
 		}
 		pop();
 	}
 
-	show() {
-		push();
-		colorMode(HSB, 50);
-		let hue = 0;
-		for (let i = 0; i < this.tail.length; i++) {
-			stroke(hue, 50, 50);
-			point(this.tail[i].x, this.tail[i].y);	
-			hue = (hue + 1) % 51;
-		}	
-		pop();
+	toggleRainbow() {
+		this.rainbow = !this.rainbow;
 	}
 }

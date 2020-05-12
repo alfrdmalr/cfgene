@@ -31,6 +31,10 @@ class SeqChar {
 		return chars.map(c => c.getCodon(verbose)).join(delim);
 	}
 
+	getInputChar() {
+		return this.inputChar;
+	}
+
 	getAA(verbose) {
 		if (!this.hasExpansion) {
 			if (verbose) {
@@ -57,5 +61,4 @@ class SeqChar {
 			return this.codon;
 		}
 	}
-
 }
