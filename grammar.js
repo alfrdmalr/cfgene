@@ -68,21 +68,24 @@ class	Grammar {
 
 	// Updates the given accumulator by expanding the input text recursively
 	_expander(text, acc) {
-		console.log(text);
+		if (text === "") {
+			return;
+		}
 		let parsedText = text.split(this.symbolCapture); // capture so we don't lose symbols
-		
-		for (let i = 0; i < parsedText.length; i++) {
-			let string = (parsedText[i]);
-			let match = string.match(this.symbolCapture);
+		for (const str of parsedText) {
+			if (str === "") {
+				continue;
+			}
+			let match = str.match(this.symbolCapture);
 			let symbol = match && match[0];
 			if (!symbol) {
-				acc.push(string);
+				acc.push(str);
 			} else if (this.hasRule(symbol)) {
 				let randomExpansion = this.getRandomExpansion(symbol);
-				this.expand(randomExpansion, acc);
+				this._expander(randomExpansion, acc);
 			} else {
 				console.log(`No production rule for ${symbol} was found in the grammar.`)
-				acc.push(string); // if no rule is found, preserve the original string
+				acc.push(str); // if no rule is found, preserve the original string
 			}
 		}
 	}

@@ -5,7 +5,7 @@ class Walker {
 		this.pos = createVector(x, y);
 		this.originalPos = this.pos.copy();
 		this.scale = scale || 1;
-		this.rainbow = true;
+		this.colorMode = 'cycle';
 	} 	
 
 	step(base) {
@@ -33,6 +33,7 @@ class Walker {
 
 	walk(seq) {
 		this.reset();	
+		
 		push();
 		scale(this.scale);
 		
@@ -42,16 +43,38 @@ class Walker {
 		}
 		colorMode(HSB, max);
 		let col = 0;
-		for (let i = 0; i < seq.length; i++) {
-			this.step(seq[i]);
-			stroke(col, max, max);
-			point(this.pos.x, this.pos.y);
-			col = (col + 1) % max;
+		
+		for (const c of seq) {
+			if (this.colorMode === 'codon') {
+				let randomHue = Math.floor(c.seed * max);
+				col = randomHue;
+			}
+
+			for (const base of c.getCodon()) {
+				stroke(col, max, max);
+				this.step(base);
+				point(this.pos.x, this.pos.y);
+				if (this.colorMode !== 'codon') {
+					col = (col + 1) % max;
+				}
+			}
 		}
 		pop();
 	}
 
-	toggleRainbow() {
-		this.rainbow = !this.rainbow;
+	// 'cycle': with each base, step through colors
+	// 'rainbow': stretch the rainbow across the whole sequence, from start to
+	//						finish
+	// 'codon': each set of three characters are colored differently
+	setColorMode(mode) {
+		switch (mode) {
+			case 'cycle': 
+			case 'rainbow':
+			case 'codon':
+				this.colorMode = mode;
+				break;
+			default:
+				console.log(`No such color mode "${mode}".`);
+		}
 	}
 }

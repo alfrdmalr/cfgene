@@ -1,3 +1,6 @@
+// extended letter codes taken from the "Amino Acid Codes" section of this
+// site: https://www.ddbj.nig.ac.jp/ddbj/code-e.html
+
 let grammar = {
 	"<AA>": [
 		"<A>",
@@ -191,4 +194,49 @@ let grammar = {
 		"UAA",
 		"UAG"
 	]
+}
+
+let nonstandard = {
+	"<U>": [ //Selenocysteine
+		"UGA"
+	],
+	"<O>": [ //Pyrrolysine
+		"UAG"
+	]
+}
+
+let degenerate = {
+	"<B>": [
+		"<D>",
+		"<N>"
+	],
+	"<Z>": [
+		"<Q>",
+		"<E>"
+	],
+	"<X>": [
+		"<AA>"
+	],
+	"<J>": [
+		"<L>",
+		"<I>"
+	]
+}
+
+let balance = {
+	"< >": [
+		"UUC",
+		"AUC",
+		"CCU",
+		"GUG",
+		"GGU",
+		"GCU"
+	]
+}
+
+let extended = {
+	...grammar, 
+	...nonstandard,
+	...degenerate,
+	...balance
 }

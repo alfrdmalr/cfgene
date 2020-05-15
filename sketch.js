@@ -1,8 +1,10 @@
 
-let g = new Grammar(grammar);
+//let g = new Grammar(extended);
+let g = new Grammar(extended, undefined, /(<[\w\s]+>)/); //allow spaces
 let input;
 let sequenceCharacters;
 let walker;
+let drawScale = 10;
 
 function setup() {
 	createCanvas(640, 640);
@@ -11,8 +13,10 @@ function setup() {
 	inputBox.input(updateInput);
 	sequenceCharacters = [];
 	
-	walker = new Walker(0, 0, 10);
-	walker.toggleRainbow();	
+	walker = new Walker(0, 0, drawScale);
+	//walker.setColorMode('rainbow');	
+	walker.setColorMode('codon');	
+	//walker.setColorMode('cycle');	
 
 	noLoop();
 }
@@ -27,7 +31,7 @@ function draw() {
 	text(SeqChar.getAllCodons(sequenceCharacters, ' | '), 50, 140);
 	
 	translate(width/2, height/2);
-	walker.walk(SeqChar.getAllCodons(sequenceCharacters));
+	walker.walk(sequenceCharacters);
 }
 
 function updateInput() {
@@ -54,10 +58,7 @@ function mutate(input, seq, gram) {
 	let slicedInput = chop(input, leftslice, rightslice);
 	let exons = chop(seq, leftslice, rightslice);
 
-
 	let convertedInput = SeqChar.convert(slicedInput.mid, gram);
-	console.log('input', slicedInput);
-	console.log('seq', chop(seqStr, leftslice, rightslice));
 
 	return exons.left.concat(convertedInput, exons.right);
 }

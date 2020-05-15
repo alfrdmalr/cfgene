@@ -7,6 +7,9 @@ class SeqChar {
 		this.inputChar = c;
 		this.symbol = grammar.symbolify(c);
 		this.grammar = grammar;
+		// store a random value to maintain 
+		// consistency between processing renders
+		this.seed = Math.random(); 
 	
 		// if the grammar has a production rule for this character
 		if (this.grammar.hasRule(this.symbol)) {
@@ -57,8 +60,12 @@ class SeqChar {
 		} else if (this.codon) {
 			return this.codon;
 		} else {
-			this.codon = this.grammar.getRandomExpansion(this.symbol);
+			this.codon = this.grammar.expand(this.symbol);
 			return this.codon;
 		}
+	}
+
+	getSeed() {
+		return this.seed;
 	}
 }
