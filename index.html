@@ -16,23 +16,27 @@
 				<input type='text' id='input' />
 			</div>
 			<div id="sketch-container">
-				<div id="panel-button" class="text-button button">(?)</div>
+				<div id="panel-button" tabindex="0" class="text-button button">(?)</div>
 			</div>
 			
-			<div id="panel-container">
+			<div id="panel-container" tabindex="0">
 				<div id="panel-header">
 					<h2>Settings Panel</h2>
-					<div id="close-button" class="text-button button">(X)</div>
+					<div id="close-button" tabindex="0" class="text-button button">(X)</div>
 				</div>
 				<div id="panel-content">
 					<div id="options-container" >
-						<label for="mode-select">Select Color Mode</label>
-						<select id="mode-select">
+						<label for="mode-select" class="setting-label">Select Color Mode</label>
+						<select id="mode-select" class="setting">
 							<option value="cycle">Cycle</option>
 							<option value="rainbow">Rainbow</option>
 							<option value="codon">Codon</option>
 							<option value="base">Base</option>
 						</select>
+						<label for="speed-slider" class="setting-label">Speed</label>
+						<input type="range" min='1' max='10' id='speed-slider' class="setting" />
+						<label for="zoom-slider" class="setting-label">Zoom</label>
+						<input type="range" min='1' max='10' id='zoom-slider'	class="setting" />
 						<div id="sequence-container"></div>
 					</div>
 				

@@ -5,7 +5,8 @@ let g = new Grammar(extended, undefined, /(<[\w\s]+>)/); //allow spaces
 let input;
 let sequenceCharacters;
 let walker;
-let drawScale = 10;
+let speed = 1;
+let zoom = 9;
 let walkerColorMode = 'rainbow';
 let containerID = 'sketch-container';
 
@@ -18,10 +19,12 @@ function setup() {
 	let panel = document.getElementById('panel-container');
 	let panelButton = document.getElementById('panel-button');
 	let closeButton = document.getElementById('close-button');
+	let zoomSlider = document.getElementById('zoom-slider');
+	let speedSlider = document.getElementById('speed-slider');
 
 
 	if (!(container && select && textarea && inputBox && updateGrammar && panel
-		&& panelButton && closeButton)) {
+		&& panelButton && closeButton && zoomSlider && speedSlider)) {
 		console.log('html bad. me dumb.');
 		return;
 	}
@@ -43,10 +46,31 @@ function setup() {
 	};	
 
 	// add panel button functionality 
-	let toggleVisiblity = () => panel.classList.toggle('show-panel');
-	panelButton.onclick = toggleVisiblity;
-	closeButton.onclick = toggleVisiblity;
+	let toggleVisibility = () => panel.classList.toggle('show-panel');
+	panelButton.onclick = toggleVisibility;
+	closeButton.onclick = toggleVisibility;
 
+	// add keypress handler to panel
+	panel.onkeydown = (e) => {
+		if (e.code === "Escape") {
+			toggleVisibility();	
+		}
+	}
+
+	// initialize slider values
+	zoomSlider.value = zoom;
+	speedSlider.value = speed;
+	
+	// add slider functionality
+	zoomSlider.oninput = (e) => {
+		zoom = e.target.valueAsNumber;
+		redraw();
+	}
+
+	speedSlider.oninput = (e) => {
+		speed = e.target.valueAsNumber;
+		redraw();
+	} 
 
 	// set up mode switcher
 	select.value = walkerColorMode;
@@ -60,8 +84,9 @@ function setup() {
 	sequenceCharacters = [];
 
 	// initialize walker
-	walker = new Walker(0, 0, drawScale);
+	walker = new Walker(0, 0, speed);
 	walker.setColorMode(walkerColorMode); // initialize color mode
+	inputBox.focus();
 	noLoop();
 }
 
@@ -70,6 +95,9 @@ function draw() {
 	document.getElementById('sequence-container').innerHTML = SeqChar.getAllCodons(sequenceCharacters, ' | ')
 	
 	translate(width/2, height/2);
+	
+	scale(zoom);
+	walker.setSpeed(speed);
 	walker.walk(sequenceCharacters);
 }
 
@@ -79,5 +107,5 @@ function windowResized() {
 	if (!container) {
 		return;
 	}
-	resizeCanvas(container.clientWidth, container.clientHeight);
+	resizeCanvas(Math.floor(container.clientWidth), Math.floor(container.clientHeight));
 }
