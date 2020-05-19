@@ -12,6 +12,17 @@ class	Grammar {
 		this.symbolCapture = symbolCapture || /(<[\w]+>)/;
 	}
 
+	loadGrammar(g) {
+		try {
+			let res = JSON.parse(g);
+			if (res) {
+				this.grammar = res;
+			}
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	symbolify(c) {
 		if (this.adornSymbol) {
 			return this.adornSymbol(c);
@@ -39,7 +50,11 @@ class	Grammar {
 			throw new Error(`Symbol ${symbol} already has the following rule:\n${this.getExpansionOptions(symbol)}`);
 		}
 		
-		this.grammar[adornedSymbol] = expansion;
+		let arr = expansion; 
+		if (!Array.isArray(expansion)) {
+			arr = [ expansion ]
+		}
+		this.grammar[symbol] = arr;
 	}
 
 	updateRule(symbol, expansion) {
@@ -78,6 +93,7 @@ class	Grammar {
 			}
 			let match = str.match(this.symbolCapture);
 			let symbol = match && match[0];
+
 			if (!symbol) {
 				acc.push(str);
 			} else if (this.hasRule(symbol)) {

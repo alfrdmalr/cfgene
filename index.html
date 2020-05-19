@@ -1,12 +1,52 @@
 <html>
 	<head>
+		<meta charset="utf-8" />
 		<script src="p5.js"></script>
+		<link rel="stylesheet" href="styles.css"></link>
 		<script src="grammar.js"></script>
 		<script src="grammarDeclaration.js"></script>
 		<script src="seqChar.js"></script>
 		<script src="walker.js"></script>
+		<script src="utils.js"></script>
 		<script src="sketch.js"></script>
 	</head>
 	<body>
+		<div id="app" >
+			<div id='input-container'>
+				<input type='text' id='input' />
+			</div>
+			<div id="sketch-container">
+				<div id="panel-button" class="text-button button">(?)</div>
+			</div>
+			
+			<div id="panel-container">
+				<div id="panel-header">
+					<h2>Settings Panel</h2>
+					<div id="close-button" class="text-button button">(X)</div>
+				</div>
+				<div id="panel-content">
+					<div id="options-container" >
+						<label for="mode-select">Select Color Mode</label>
+						<select id="mode-select">
+							<option value="cycle">Cycle</option>
+							<option value="rainbow">Rainbow</option>
+							<option value="codon">Codon</option>
+							<option value="base">Base</option>
+						</select>
+						<div id="sequence-container"></div>
+					</div>
+				
+					<div id="grammar-container" >
+						<label for="grammar">Grammar Editor</label>
+						<textarea id="grammar">
+							Type here to update the grammar.
+						</textarea>
+						<button id="update-grammar" class="button">
+								Update Grammar
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
