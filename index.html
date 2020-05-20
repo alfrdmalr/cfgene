@@ -12,45 +12,46 @@
 	</head>
 	<body>
 		<div id="app" >
-			<div id='input-container'>
-				<input type='text' id='input' />
-			</div>
-			<div id="sketch-container">
-				<div id="panel-button" tabindex="0" class="text-button button">(?)</div>
-			</div>
-			
-			<div id="panel-container" tabindex="0">
-				<div id="panel-header">
-					<h2>Settings Panel</h2>
-					<div id="close-button" tabindex="0" class="text-button button">(X)</div>
+			<input type='text' id='input' />
+
+			<div id='core'>
+
+				<div id="sketch-container">
 				</div>
-				<div id="panel-content">
-					<div id="options-container" >
-						<label for="mode-select" class="setting-label">Select Color Mode</label>
-						<select id="mode-select" class="setting">
-							<option value="cycle">Cycle</option>
-							<option value="rainbow">Rainbow</option>
-							<option value="codon">Codon</option>
-							<option value="base">Base</option>
-						</select>
-						<label for="speed-slider" class="setting-label">Speed</label>
-						<input type="range" min='1' max='10' id='speed-slider' class="setting" />
-						<label for="zoom-slider" class="setting-label">Zoom</label>
-						<input type="range" min='1' max='10' id='zoom-slider'	class="setting" />
-						<div id="sequence-container"></div>
-					</div>
-				
-					<div id="grammar-container" >
-						<label for="grammar">Grammar Editor</label>
-						<textarea id="grammar">
-							Type here to update the grammar.
-						</textarea>
-						<button id="update-grammar" class="button">
-								Update Grammar
-						</button>
+				<div id="panel-container" tabindex="0">
+
+					<div id="panel-content">
+
+						<button id="close-button" class="text-button">(X)</button>
+						<div id="options-container" >
+							<label for="mode-select" class="setting-label">Color Mode</label>
+							<select id="mode-select" class="setting">
+								<option value="cycle">Cycle</option>
+								<option value="rainbow">Rainbow</option>
+								<option value="codon">Codon</option>
+								<option value="base">Base</option>
+							</select>
+							<label for="speed-slider" class="setting-label">Speed</label>
+							<input type="range" min='1' max='10' id='speed-slider' class="setting" />
+							<label for="zoom-slider" class="setting-label">Zoom</label>
+							<input type="range" min='1' max='20' id='zoom-slider'	class="setting" />
+							<div id="sequence-container"></div>
+						</div>
+					
+						<div id="grammar-container" >
+							<label for="grammar">Grammar Editor</label>
+							<textarea id="grammar">
+								Type here to update the grammar.
+							</textarea>
+							<button id="update-grammar" class="button">
+									Update Grammar
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
+			<div id="mask"></div>
+			<button id="panel-button" class="text-button button">(?)</button>
 		</div>
 	</body>
 </html>

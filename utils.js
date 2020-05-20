@@ -84,3 +84,7 @@ function updateGrammar(str) {
 		console.log(error)
 	}
 }
+
+function isSmallBrowser() {
+	return window.matchMedia('(max-width: 1280px)').matches;	
+}

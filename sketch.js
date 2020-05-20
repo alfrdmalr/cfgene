@@ -6,9 +6,10 @@ let input;
 let sequenceCharacters;
 let walker;
 let speed = 1;
-let zoom = 9;
+let zoom = 10;
 let walkerColorMode = 'rainbow';
 let containerID = 'sketch-container';
+let panelOpen = false;
 
 function setup() {
 	let container = document.getElementById(containerID);
@@ -17,16 +18,34 @@ function setup() {
 	let inputBox = document.getElementById('input');	
 	let updateGrammar = document.getElementById('update-grammar');
 	let panel = document.getElementById('panel-container');
+	let mask = document.getElementById('mask');
 	let panelButton = document.getElementById('panel-button');
 	let closeButton = document.getElementById('close-button');
 	let zoomSlider = document.getElementById('zoom-slider');
+	let zoomSliderLabel = document.querySelector('label[for=zoom-slider]')
 	let speedSlider = document.getElementById('speed-slider');
+	let speedSliderLabel = document.querySelector('label[for=speed-slider]')
 
-
-	if (!(container && select && textarea && inputBox && updateGrammar && panel
-		&& panelButton && closeButton && zoomSlider && speedSlider)) {
-		console.log('html bad. me dumb.');
-		return;
+	let elements = [
+		container,
+		select,
+		textarea,
+		inputBox,
+		updateGrammar, 
+		panel, 
+		mask, 
+		panelButton,
+		closeButton,
+		zoomSlider,
+		zoomSliderLabel,
+		speedSlider,
+		speedSliderLabel,
+	];
+	
+	for (const el of elements) {
+		if (!el) {
+			console.log('html bad. me dumb.');
+		}
 	}
 
 	// create, size, and place canvas
@@ -46,29 +65,51 @@ function setup() {
 	};	
 
 	// add panel button functionality 
-	let toggleVisibility = () => panel.classList.toggle('show-panel');
-	panelButton.onclick = toggleVisibility;
-	closeButton.onclick = toggleVisibility;
+	let togglePanel = () => {
+		panelOpen = !panelOpen;
+		panel.classList.toggle('toggle-panel');
+		mask.classList.toggle('toggle-panel');
+		panelButton.classList.toggle('toggle-panel');
+		closeButton.classList.toggle('toggle-panel');
+		if (panelOpen && isSmallBrowser()) {
+			panel.focus();
+		}
+		windowResized();	
+	};
+	panelButton.onclick = togglePanel;
+	closeButton.onclick = togglePanel;
 
 	// add keypress handler to panel
-	panel.onkeydown = (e) => {
+	document.onkeydown = (e) => {
 		if (e.code === "Escape") {
-			toggleVisibility();	
+			togglePanel();	
 		}
 	}
 
 	// initialize slider values
-	zoomSlider.value = zoom;
-	speedSlider.value = speed;
+	let setZoom = z => {
+		zoom = z;
+		zoomSlider.value = zoom;
+		zoomSliderLabel.innerHTML = `Zoom (${zoom})`;
+	}
+
+	let setSpeed = s => {
+		speed = s;
+		speedSlider.value = speed;
+		speedSliderLabel.innerHTML = `Speed (${speed})`;
+	}
+
+	setZoom(zoom);
+	setSpeed(speed);
 	
 	// add slider functionality
 	zoomSlider.oninput = (e) => {
-		zoom = e.target.valueAsNumber;
+		setZoom(e.target.valueAsNumber);
 		redraw();
 	}
 
 	speedSlider.oninput = (e) => {
-		speed = e.target.valueAsNumber;
+		setSpeed(e.target.valueAsNumber);
 		redraw();
 	} 
 
@@ -80,7 +121,7 @@ function setup() {
 	}
 	
 	// mutate input when it's changed
-	inputBox.addEventListener('input', updateInput);
+	inputBox.oninput = updateInput
 	sequenceCharacters = [];
 
 	// initialize walker
@@ -92,10 +133,8 @@ function setup() {
 
 function draw() {
 	background(255);
-	document.getElementById('sequence-container').innerHTML = SeqChar.getAllCodons(sequenceCharacters, ' | ')
-	
+	document.getElementById('sequence-container').innerHTML = SeqChar.getAllCodons(sequenceCharacters);
 	translate(width/2, height/2);
-	
 	scale(zoom);
 	walker.setSpeed(speed);
 	walker.walk(sequenceCharacters);
