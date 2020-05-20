@@ -51,7 +51,6 @@ select {
 	max-width: 10rem;
 }
 
-
 #sketch-container #panel-button {
 	position: absolute;
 	bottom: 1rem;
@@ -105,6 +104,14 @@ select {
 	display: flex;
 	flex-direction: column;
 	width: 60%;
+}
+
+.setting {
+	margin-bottom: 1rem;
+}
+
+.setting-label {
+	margin-bottom: 0.25rem;
 }
 
 #grammar-container {
