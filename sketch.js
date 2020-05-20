@@ -52,6 +52,9 @@ function setup() {
 	let canvas = createCanvas(container.clientWidth, container.clientHeight);
 	canvas.parent(containerID);
 
+	// clear input box
+	inputBox.value = '';
+
 	// load grammar into editor
 	textarea.value = JSON.stringify(g.grammar, undefined, 2);
 	
