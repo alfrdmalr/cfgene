@@ -76,11 +76,3 @@ function chop(str, leftslice, rightslice) {
 	}
 }
 
-function updateGrammar(str) {
-	try {
-		let test = JSON.parse(str);
-
-	} catch (error) {
-		console.log(error)
-	}
-}
