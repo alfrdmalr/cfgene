@@ -5,42 +5,52 @@ body {
 	background: rgb(100, 150, 200);
 }
 
+* {
+	font-family: Inconsolata, American Typewriter, Serif;
+}
+
 #app {
 	display: flex;
 	flex-direction: column;
-	padding: 1rem 15%;
+	padding: 1rem 10%;
 	align-items: center;
 	height: calc(100vh - 2rem);
 }
 
-@media only screen and (max-width: 800px) {
-	#app {
-		padding: 1rem 5%;
-	}
+#input {
+	width: 100%;
+	font-size: 1.5rem;
+	padding: 0.75rem 0.5rem;
+	margin-bottom: 0.5rem;
+	min-width: 400px;
 }
 
-#input-container {
+#core {
+	display: flex;
+	flex-wrap: wrap;
 	width: 100%;
-	padding-bottom: 0.5rem;
-}
-
-#input-container input {
-	height: 3rem;
-	width: 100%;
+	justify-content: space-around;	
+	height: 100%;	
 }
 
 #sketch-container {
-	position: relative;
 	display: flex;
 	flex-direction: column;
-	align-items: center;	
-	width: 100%;
-	height: 100%;
+	align-items: center;
+	min-width: 400px;
+	flex: 1 1 65vw
 }
 
-.button {
+#button {
 	cursor: pointer;
 	color: black;
+}
+
+.text-button {
+	border: none;
+	background: none;
+	font-size: 2rem;
+	padding: 0;
 }
 
 .text-button:hover {
@@ -51,27 +61,35 @@ select {
 	max-width: 10rem;
 }
 
-#sketch-container #panel-button {
-	position: absolute;
+#panel-button {
+	position: fixed;
 	bottom: 1rem;
 	left: 1rem;
 }
 
 #panel-container {
-	position: fixed;
-	visibility: hidden;
-	z-index: 10;
+	display: none;
 	overflow-y: hidden;
-	background-color: rgb(100, 200, 150);
-	top: calc(15vh - 1rem);
-	left: calc(15vw - 1rem);
-	height: 70vh;
-	width: 70vw;
-	padding: 1rem;
+	flex: 1 1 10rem;
 }
 
-#panel-container.show-panel {
-	visibility: visible;
+#panel-container.toggle-panel {
+	display: initial;
+}
+
+#close-button {
+	display: none;
+}
+
+#mask {
+	display: none;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: black;
+	opacity: 0.7;
 }
 
 #panel-header {
@@ -81,29 +99,52 @@ select {
 	height: 2rem;
 }
 
-#panel-header h2 {
-	margin: 0;
-}
-
-#panel-header #close-button {
-	margin-left: auto;
-}
-
 #panel-content {
 	display: flex;
-	width: 100%;
-	height: calc(100% - 3rem);
-	justify-content: space-between;
+	flex-direction: column;
+	height: calc(100% - 1rem);
+	padding: 1rem;
+}
+
+@media only screen and (max-width: 1280px) {
+	#panel-container {
+		background: rgb(0, 200, 150);
+		position: fixed;
+		width: 70vw;
+		height: 70vh;
+		z-index: 1;
+		border-radius: 10px;
+	}
+
+	#panel-content {
+		height: calc(100% - 2rem);
+	}
+	
+	#close-button.toggle-panel {
+		display: initial;
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+	}
+
+	#mask.toggle-panel {
+		display: initial;
+	}
+
+	#panel-button.toggle-panel {
+		color: white;
+	}
 }
 
 #sequence-container {
-
+	visibility: hidden;
+	display: none;
 }
 
 #options-container {
 	display: flex;
 	flex-direction: column;
-	width: 60%;
+	width: 100%;
 }
 
 .setting {
@@ -117,7 +158,8 @@ select {
 #grammar-container {
 	display: flex;
 	flex-direction: column;
-	width: calc(40% - 1rem);
+	width: 100%;
+	height: 100%;
 }
 
 #grammar-container textarea {

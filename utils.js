@@ -76,3 +76,6 @@ function chop(str, leftslice, rightslice) {
 	}
 }
 
+function isSmallBrowser() {
+	return window.matchMedia('(max-width: 1280px)').matches;	
+}
